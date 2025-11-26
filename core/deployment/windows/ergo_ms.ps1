@@ -38,7 +38,8 @@ param(
 
     [switch]$Purge,
     [switch]$NoCli,
-    [switch]$RecreateVenv
+    [switch]$RecreateVenv,
+    [switch]$SkipGit
 )
 
 $ErrorActionPreference = "Stop"
@@ -247,7 +248,7 @@ function Main {
         }
         'setup-full' {
             $projectRoot = Get-ProjectRoot -ProvidedRoot $Root
-            Setup-FullSystem -Root $projectRoot -RecreateVenv $RecreateVenv
+            Setup-FullSystem -Root $projectRoot -RecreateVenv $RecreateVenv -SkipGit:$SkipGit
         }
         'help' {
             try {

@@ -106,6 +106,58 @@
             "problemMatcher": []
         },
         {
+            "label": "Setup Full System (skip git)",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "shell": {
+                    "executable": "cmd.exe",
+                    "args": [
+                        "/d",
+                        "/c"
+                    ]
+                }
+            },
+            "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File \"${workspaceFolder}\\core\\deployment\\windows\\ergo_ms.ps1\" setup-full -Root \"${workspaceFolder}\" -SkipGit",
+            "windows": {
+                "options": {
+                    "cwd": "${workspaceFolder}",
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/d",
+                            "/c"
+                        ]
+                    }
+                },
+                "command": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File \"${workspaceFolder}\\core\\deployment\\windows\\ergo_ms.ps1\" setup-full -Root \"${workspaceFolder}\" -SkipGit"
+            },
+            "linux": {
+                "options": {
+                    "cwd": "${workspaceFolder}",
+                    "shell": {
+                        "executable": "/bin/bash",
+                        "args": [
+                            "-lc"
+                        ]
+                    }
+                },
+                "command": "sudo /bin/bash \"${workspaceFolder}/core/deployment/linux/ergo_ms.sh\" setup-full --root \"${workspaceFolder}\""
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "new",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "group": {
+                "kind": "build"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "Start All Services",
             "dependsOrder": "parallel",
             "dependsOn": [

@@ -4,7 +4,8 @@
 function Setup-FullSystem {
     param(
         [string]$Root,
-        [bool]$RecreateVenv = $false
+        [bool]$RecreateVenv = $false,
+        [switch]$SkipGit
     )
     
     Write-ColorOutput "`n=== Full System Setup ===" Cyan
@@ -12,28 +13,33 @@ function Setup-FullSystem {
     
     # Step 1: Git submodules
     Write-ColorOutput "-> Step 1/7: Updating git submodules..." Yellow
-    Push-Location $Root
-    try {
-        & git submodule update --init --remote core/api core/client
-        if ($LASTEXITCODE -ne 0) { throw "Git submodule update failed" }
-        
-        Push-Location "core\api"
-        & git checkout dev
-        Pop-Location
-        
-        Push-Location "core\client"
-        & git checkout dev
-        Pop-Location
-        
-        Write-ColorOutput "[OK] Git submodules updated" Green
+    if ($SkipGit -or $env:ERGO_SKIP_GIT_SUBMODULES -eq '1') {
+        Write-ColorOutput "  Skipping git submodules (SkipGit switch or ERGO_SKIP_GIT_SUBMODULES=1)" Gray
     }
-    catch {
-        Write-ColorOutput "[ERROR] Failed to update git submodules: $($_.Exception.Message)" Red
-        Pop-Location
-        exit 1
-    }
-    finally {
-        Pop-Location
+    else {
+        Push-Location $Root
+        try {
+            & git submodule update --init --remote core/api core/client
+            if ($LASTEXITCODE -ne 0) { throw "Git submodule update failed" }
+            
+            Push-Location "core\api"
+            & git checkout dev
+            Pop-Location
+            
+            Push-Location "core\client"
+            & git checkout dev
+            Pop-Location
+            
+            Write-ColorOutput "[OK] Git submodules updated" Green
+        }
+        catch {
+            Write-ColorOutput "[ERROR] Failed to update git submodules: $($_.Exception.Message)" Red
+            Pop-Location
+            exit 1
+        }
+        finally {
+            Pop-Location
+        }
     }
     
     # Step 2: Create virtual environment
