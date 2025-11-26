@@ -103,12 +103,6 @@
 [submodule "science_publishing"]
 	path = modules/science_publishing
 	url = https://github.com/Printscan/science-publishing
-	branch = frontend
-	update = merge
-	ignore = all
-[submodule "science_publishing_backend"]
-	path = modules/science_publishing_backend
-	url = https://github.com/Printscan/science-publishing
-	branch = backend
+	branch = main
 	update = merge
 	ignore = all
